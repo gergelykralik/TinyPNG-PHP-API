@@ -36,10 +36,13 @@ class TinyPNG
     /**
      * Send image shrink request
      * @param  string $file path to file to shrink
-     * @return boolean       Is HTTP response 200
+     * @return boolean|exception       Is HTTP response 200
      */
     public function shrink($file)
     {
+    	if (file_exists($file) === false) {
+            throw new Exception('File does not exist');
+        }
         curl_setopt($this->getCurl(), CURLOPT_POSTFIELDS, file_get_contents($file));
         $this->lastResult = curl_exec($this->getCurl());
         return curl_getinfo($this->getCurl(), CURLINFO_HTTP_CODE) === 200;
