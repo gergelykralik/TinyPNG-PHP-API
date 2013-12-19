@@ -9,7 +9,7 @@
 class TinyPNG
 {
 
-    private $url = 'http://api.tinypng.org/api/shrink';
+    private $url = 'https://api.tinypng.com/shrink';
     private $curl = null;
     private $lastResult = null;
 
@@ -45,7 +45,7 @@ class TinyPNG
         }
         curl_setopt($this->getCurl(), CURLOPT_POSTFIELDS, file_get_contents($file));
         $this->lastResult = curl_exec($this->getCurl());
-        return curl_getinfo($this->getCurl(), CURLINFO_HTTP_CODE) === 200;
+        return curl_getinfo($this->getCurl(), CURLINFO_HTTP_CODE) === 201;
     }
 
     /**
