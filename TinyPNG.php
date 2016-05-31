@@ -1,15 +1,17 @@
 <?php
 /**
- *  TinyPNG API v1
+ *  TinyPNG API
  *
- *  Michael Wright - @michaelw90
+ * based ont the repo by Michael Wright - @michaelw90
+ *
+ * @author Gergely Kralik
  */
 
 
 class TinyPNG
 {
 
-    private $url = 'https://api.tinypng.com/shrink';
+    private $url = 'https://api.tinify.com/shrink';
     private $curl = null;
     private $lastResult = null;
 
@@ -24,9 +26,9 @@ class TinyPNG
             $curlOpts = array(
                 CURLOPT_RETURNTRANSFER => 1,
                 CURLOPT_URL => $this->url,
-                CURLOPT_USERAGENT => 'TinyPNG PHP API v1',
+                CURLOPT_USERAGENT => 'Tinify API v1',
                 CURLOPT_POST => 1,
-                CURLOPT_USERPWD => 'api:' . $key,
+                CURLOPT_USERPWD => 'api:'.$key,
                 CURLOPT_BINARYTRANSFER => 1
             );
             curl_setopt_array($this->curl, $curlOpts);
@@ -45,36 +47,9 @@ class TinyPNG
         }
         curl_setopt($this->getCurl(), CURLOPT_POSTFIELDS, file_get_contents($file));
         $this->lastResult = curl_exec($this->getCurl());
-        return curl_getinfo($this->getCurl(), CURLINFO_HTTP_CODE) === 201;
-    }
-
-    /**
-     * Return API response object
-     * @return object|exception
-     */
-    public function getResult() {
-        return $this->_getResult();
-    }
-
-    /**
-     * Return API response as JSON
-     * @return string|exception
-     */
-    public function getResultJson() {
-        return json_decode($this->_getResult());
-    }
-
-    /**
-     * Return API response object
-     * @return object|exception
-     */
-    protected function _getResult()
-    {
-        if ($this->lastResult === null) {
-            throw new Exception('No current result');
-        }
         return $this->lastResult;
     }
+
 
     /**
      * Return Curl object
